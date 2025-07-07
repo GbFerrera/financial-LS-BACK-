@@ -1,16 +1,15 @@
 const {Router} = require("express")
 
 
-const SessionsController = require("../controllers/sessionsControllers")
-
-const sessionsController = new SessionsController()
+const superAdminsControllers = require("../controllers/superAdminControllers")
 
 
 
-const sessionRoutes = Router()
+
+const superAdminRoutes = Router()
 
 
-sessionRoutes.post("/",sessionsController.createSuperAdmin)
+superAdminRoutes.post("/",superAdminsControllers.create)
 
 
-module.exports = sessionRoutes
+module.exports = superAdminRoutes

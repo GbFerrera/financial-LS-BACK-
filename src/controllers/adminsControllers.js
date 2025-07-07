@@ -8,7 +8,9 @@ class AdminsController {
     async create(req, res) {
 
         const { name, email, password, phone_number } = req.body;
-        const super_admin_id = req.headers
+        const super_admin_id = req.headers.super_admin_id
+
+
 
         try {
 
@@ -18,18 +20,29 @@ class AdminsController {
                 throw new ErrorApp("Admin ja cadastrado", 401);
             }
 
-            const admin = await knex("admins").insert({
+            // Insert the admin and get the ID of the inserted record
+            const result = await knex("admins").insert({
                 name,
                 email,
                 password: bcrypt.hashSync(password, 10),
                 phone_number,
                 super_admin_id
+            }).returning('id')
+            
+            // Extract the ID value from the result
+            const adminId = result[0].id
+            
+            // Fetch the created admin to return it
+            const createdAdmin = await knex("admins").where('id', adminId).first()
+            
+            return res.status(201).json({
+                admin: createdAdmin,
+                message: "Admin cadastrado com sucesso"
             })
 
-            return res.status(201).json(admin)
-
         } catch (error) {
-            
+            console.error(error)
+            return res.status(500).json({ error: error.message || "Internal server error" })
         }
 
     }

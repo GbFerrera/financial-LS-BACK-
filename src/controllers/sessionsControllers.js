@@ -1,7 +1,7 @@
 const knex = require("../database/knex")
 const authConfig = require("../configs/auth")
 const { sign } =  require("jsonwebtoken")
-const ErrorApplication = require("../utils/ErrorApplication")
+const ErrorApplication = require("../utils/ErrorApp")
 const bcrypt = require("bcryptjs");
 
 class SessionsController {
@@ -11,14 +11,14 @@ class SessionsController {
     
     try {
       // Verifica se o usuário existe
-      const user = await knex("users").where({ email }).first();
+      const admin = await knex("admins").where({ email }).first();
     
-      if (!user) {
+      if (!admin) {
         throw new ErrorApplication("E-mail ou senha incorreta", 401);
       }
     
       // Verifica se a senha está correta
-      const passwordMatch = await bcrypt.compare(password, user.password);
+      const passwordMatch = await bcrypt.compare(password, admin.password);
     
       if (!passwordMatch) {
         throw new ErrorApplication("E-mail ou senha incorreta", 401);
@@ -27,12 +27,12 @@ class SessionsController {
       // Gera o token JWT após a verificação de senha
       const { expiresIn, secret } = authConfig.jwt;
       const token = sign({}, secret, {
-        subject: String(user.id),
+        subject: String(admin.id),
         expiresIn,
       });
     
       // Retorna o usuário e o token
-      return res.status(200).json({ user, token });
+      return res.status(200).json({ admin, token });
     } catch (error) {
       console.error("Erro na autenticação:", error);
       return res.status(error.statusCode || 401).json({
