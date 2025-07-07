@@ -9,6 +9,10 @@ class UsersController {
 
         const { name, email, document , phone_number ,company_name } = req.body;
 
+        if(!name || !email || !document || !phone_number || !company_name) {
+            throw new ErrorApp("Todos os campos devem ser preenchidos", 401);
+        }
+
         try {
 
             const userExists = await knex("users").where({ email }).first();
