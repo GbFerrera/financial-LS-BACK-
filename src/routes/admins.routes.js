@@ -9,6 +9,7 @@ const adminsRoutes = Router()
 
 adminsRoutes.post("/",AdminsController.create)
 adminsRoutes.get("/",AdminsController.index)
+adminsRoutes.delete("/:id",AdminsController.delete)
 
 
 module.exports = adminsRoutes

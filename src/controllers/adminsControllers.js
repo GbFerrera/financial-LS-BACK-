@@ -85,7 +85,7 @@ class AdminsController {
 
         await knex("admins").where({ id }).del();
 
-        return res.status(204).send();
+        return res.status(201).json({message:"Admin deletado com sucesso"});
     } catch (error) {
         throw new ErrorApp(error.message, 401);
     }
