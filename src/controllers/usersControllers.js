@@ -72,6 +72,24 @@ class UsersController {
 
 
     }
+
+    async delete(req,res){
+        const {id} = req.params
+        try {
+            const userExists = await knex("users").where({id}).first()
+
+            if(!userExists){
+                throw new ErrorApp("User nao encontrado", 401)
+            }
+
+            await knex("users").where({id}).del()
+
+            return res.status(200).json({message: "User deletado com sucesso"})
+        } catch (error) {
+            console.error(error)
+            return res.status(500).json({ error: error.message || "Internal server error" })
+        }
+    }
       
 }
 
