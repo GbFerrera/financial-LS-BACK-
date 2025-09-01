@@ -4,7 +4,7 @@ require('dotenv').config();
 module.exports = {
     development: {
         client: 'pg',
-        connection: "postgresql://postgres:FXRmFBeUFwmlQfzHBSBMhIRSCDVuJvLU@mainline.proxy.rlwy.net:32864/railway"
+        connection: "postgres://postgres:t4GXtCaGiRKMXX5Po9rGfizw3cEBfJ8UNeixqw5OXJ4krW2eNFKJ7S36oLLvSsoo@62.72.11.161:5438/postgres"
           ,
         pool: {
           min: 2,
